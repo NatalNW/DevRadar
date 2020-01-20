@@ -5,12 +5,16 @@ const Dev = require('./models/Dev');
 const routes = Router();
 
 routes.post('/devs', async (request, response) => {
-    const { github_username, techs } = request.body;
+    const { github_username, techs, latiutde, longitute } = request.body;
 
     const gitResponse = await axios.get(`https://api.github.com/users/${github_username}`);
 
     const { name = login, avatar_url, bio } = gitResponse.data;
     const techsArray = techs.split(',').map(tech => tech.trim());
+    const location = {
+        type: 'Point',
+        coordinates: [longitute, latiutde],
+    };
 
    const dev = await Dev.create({
        github_username,
@@ -18,6 +22,7 @@ routes.post('/devs', async (request, response) => {
        avatar_url,
        bio,
        techs: techsArray,
+       location,
    });
 
     return response.json(dev);
