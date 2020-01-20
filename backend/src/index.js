@@ -1,5 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const routes = require('./routes');
+
 const app = express();
 
 mongoose.connect('mongodb+srv://omnistack:omnistack10@devradar-t7vfb.gcp.mongodb.net/week10?retryWrites=true&w=majority', {
@@ -8,9 +10,6 @@ mongoose.connect('mongodb+srv://omnistack:omnistack10@devradar-t7vfb.gcp.mongodb
 })
 
 app.use(express.json());
-
-app.get('/', (request, response) => {
-    return response.json({ message: 'Hello Word'});
-});
+app.use(routes);
 
 app.listen(3333);
